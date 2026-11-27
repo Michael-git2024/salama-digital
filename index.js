@@ -84,5 +84,5 @@ app.post('/api/services',auth,role('administrator','principal_investigator'),(re
  audit(req.user.email,'add_service_directory_entry',String(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid});
 });
 app.get('/api/audit',auth,role('administrator'), (req,res)=>res.json(db.prepare('SELECT * FROM audit_log ORDER BY id DESC LIMIT 100').all()));
-app.get('*',(req,res)=>res.sendFile(path.join(__dirname,'..','public','index.html')));
+app.get('*',(req,res)=>res.sendFile(path.join(__dirname, 'index.html')));
 module.exports = app;
