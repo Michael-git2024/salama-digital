@@ -42,6 +42,13 @@ export function createApp({ config, db }) {
     next();
   });
   app.get('/robots.txt', (_req, res) => res.type('text/plain').send('User-agent: *\nDisallow: /app\nDisallow: /api\n'));
+  // Liveness/readiness probe for hosting platforms (Render/Render health checks, uptime monitors).
+  // Reports process + DB status only; carries no data and requires no auth.
+  app.get('/healthz', (_req, res) => {
+    let dbStatus = 'ok';
+    try { db.prepare('SELECT 1 AS x').get(); } catch { dbStatus = 'unavailable'; }
+    res.status(dbStatus === 'ok' ? 200 : 503).json({ status: dbStatus === 'ok' ? 'ok' : 'degraded', db: dbStatus, ts: new Date().toISOString() });
+  });
 
   // CSRF defence in depth: SameSite=Strict cookie + JSON-only state-changing requests.
   app.use('/api', (req, _res, next) => {
