@@ -5,8 +5,22 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Salama Digital – Beyond Reporting</title>
   <link rel="stylesheet" href="/css/theme.css" />
-  <script src="/vendor/tailwind.js"></script>
-  <script src="/vendor/lucide.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0D2757',
+            leaf: '#56B847',
+            orange: '#F27C22',
+            deepgreen: '#146C2E',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-[#F8FAFC]">
   <header class="bg-[#0D2757] text-white border-b border-[#0a1e45]">
