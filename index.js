@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use('/api/auth/login', rateLimit({windowMs:15*60*1000, max:10, standardHeaders:true, legacyHeaders:false}));
 app.use(express.static(path.join(__dirname,'..','public')));
 
-const dbDir = path.join(__dirname,'data'); fs.mkdirSync(dbDir,{recursive:true});
+const dbDir = path.join(__dirname,'/tmp'); fs.mkdirSync(dbDir,{recursive:true});
 const db = new Database(path.join(dbDir,'salama.sqlite'));
 db.pragma('journal_mode = WAL');
 db.exec(`CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
@@ -85,4 +85,4 @@ app.post('/api/services',auth,role('administrator','principal_investigator'),(re
 });
 app.get('/api/audit',auth,role('administrator'), (req,res)=>res.json(db.prepare('SELECT * FROM audit_log ORDER BY id DESC LIMIT 100').all()));
 app.get('*',(req,res)=>res.sendFile(path.join(__dirname,'..','public','index.html')));
-app.listen(PORT,()=>console.log(`Salama Digital running at http://localhost:${PORT}`));
+module.exports = app;
