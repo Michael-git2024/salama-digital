@@ -30,7 +30,7 @@ export function createApp({ config, db }) {
   const app = express();
   app.disable('x-powered-by');
   app.use(helmet({ contentSecurityPolicy: { directives: {
-    defaultSrc: ["'self'"], scriptSrc: ["'self'"], styleSrc: ["'self'"], imgSrc: ["'self'", 'data:'],
+    defaultSrc: ["'self'"], scriptSrc: ["'self'", "'unsafe-inline'"], styleSrc: ["'self'", "'unsafe-inline'"], imgSrc: ["'self'", 'data:'],
     connectSrc: ["'self'"], frameAncestors: ["'none'"], formAction: ["'self'"] } } }));
   app.use(express.json({ limit: '100kb' }));
   app.use(cookieParser());

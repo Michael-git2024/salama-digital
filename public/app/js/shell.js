@@ -72,8 +72,8 @@
       <!-- Desktop Sidebar -->
       <aside class="hidden lg:flex lg:flex-col w-[272px] bg-[#0D2757] text-white shrink-0 border-r border-[#0a1e45]">
         <div class="px-5 py-5 border-b border-white/10 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[#56B847] flex items-center justify-center shadow-md">
-            <span class="text-[#0D2757] font-black text-sm tracking-tight">S+</span>
+          <div class="w-11 h-11 rounded-xl bg-white p-1 flex items-center justify-center shadow-md shrink-0">
+            <img src="/images/salama-logo.jpg" alt="Salama Digital" class="w-full h-full object-contain" />
           </div>
           <div>
             <div class="text-[15px] font-bold tracking-tight text-white leading-tight">Salama Digital</div>
@@ -114,8 +114,8 @@
       <aside id="mobile-drawer" class="fixed inset-y-0 left-0 w-72 bg-[#0D2757] text-white z-50 transform -translate-x-full transition-transform duration-200 lg:hidden flex flex-col">
         <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-[#56B847] flex items-center justify-center">
-              <span class="text-[#0D2757] font-black text-xs">S+</span>
+            <div class="w-9 h-9 rounded-lg bg-white p-0.5 flex items-center justify-center shrink-0">
+              <img src="/images/salama-logo.jpg" alt="Salama Digital" class="w-full h-full object-contain" />
             </div>
             <div>
               <div class="text-sm font-bold text-white">Salama Digital</div>
