@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>User Management – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/shell.js"></script>
+</head>
+<body>
+  <div id="salama-shell">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-[#0D2757]">User Management</h1>
+        <p class="text-sm text-slate-500 mt-1">Role-based access control across the seven governance roles defined for Beyond Reporting.</p>
+      </div>
+      <a href="/app/request-access.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#F27C22] hover:bg-[#d96a16] text-white text-sm font-semibold shadow-sm transition-all duration-200">
+        <i data-lucide="user-plus" class="w-4 h-4"></i>
+        <span>Provision / Request User</span>
+      </a>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-[#0D2757] text-white text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-5 py-3.5 font-semibold">User</th>
+              <th class="px-5 py-3.5 font-semibold">Institutional Email</th>
+              <th class="px-5 py-3.5 font-semibold">Assigned Role</th>
+              <th class="px-5 py-3.5 font-semibold">Status</th>
+              <th class="px-5 py-3.5 font-semibold text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+      <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+        <span>7 governance roles configured • MFA enforced for privileged roles</span>
+        <span>Admin View</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Role Modal -->
+  <div id="role-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
+      <h3 class="text-lg font-bold text-[#0D2757] mb-1">Edit User Role</h3>
+      <p id="role-modal-user" class="text-xs text-slate-500 mb-4"></p>
+      <label for="role-select" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Role</label>
+      <select id="role-select" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22] mb-5">
+        <option>System Admin</option>
+        <option>Principal Investigator</option>
+        <option>Field Supervisor</option>
+        <option>Enumerator</option>
+        <option>Data Manager</option>
+        <option>Institutional Focal Person</option>
+        <option>Public Visitor</option>
+      </select>
+      <div class="flex justify-end gap-2">
+        <button id="cancel-role" class="px-4 py-2 rounded-lg border border-slate-300 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
+        <button id="save-role" class="px-4 py-2 rounded-lg bg-[#F27C22] text-white text-xs font-semibold hover:bg-[#d96a16]">Save Role</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    initSalamaShell({ activeId: 'users', breadcrumb: 'User Management', pageTitle: 'User Management' });
+
+    const USERS = [
+      { name: 'Dr. Mercy Mwangi', email: 'm.mwangi@salamadigital.org', role: 'System Admin', status: 'Active' },
+      { name: 'Prof. Rashid Bakari', email: 'r.bakari@pwani.ac.ke', role: 'Principal Investigator', status: 'Active' },
+      { name: 'Josephine Kadzo', email: 'j.kadzo@salamadigital.org', role: 'Field Supervisor', status: 'Active' },
+      { name: 'Fatuma Omar', email: 'f.omar@salamadigital.org', role: 'Enumerator', status: 'Active' },
+      { name: 'Kevin Ochieng', email: 'k.ochieng@salamadigital.org', role: 'Data Manager', status: 'Active' },
+      { name: 'Insp. Miriam Nduku', email: 'm.nduku@police.go.ke', role: 'Institutional Focal Person', status: 'Pending Approval' },
+      { name: 'County Observer', email: 'observer@mombasa.go.ke', role: 'Public Visitor', status: 'Active' },
+    ];
+
+    let editingIdx = null;
+
+    function renderUsers() {
+      const tbody = document.getElementById('users-tbody');
+      tbody.innerHTML = USERS.map((u, idx) => `
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="px-5 py-3.5 font-semibold text-[#0D2757]">${u.name}</td>
+          <td class="px-5 py-3.5 text-slate-600">${u.email}</td>
+          <td class="px-5 py-3.5">
+            <span class="px-2.5 py-1 rounded-md bg-slate-100 text-[#0D2757] text-xs font-semibold">${u.role}</span>
+          </td>
+          <td class="px-5 py-3.5">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${u.status === 'Active' ? 'bg-[#56B847]/15 text-[#146C2E]' : 'bg-amber-100 text-amber-800'}">
+              ${u.status}
+            </span>
+          </td>
+          <td class="px-5 py-3.5 text-right">
+            <button onclick="openRoleModal(${idx})"
+              class="px-3 py-1.5 rounded-lg border border-[#0D2757] text-[#0D2757] hover:bg-[#0D2757] hover:text-white text-xs font-semibold transition-all duration-200">
+              Edit Role
+            </button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    window.openRoleModal = function (idx) {
+      editingIdx = idx;
+      document.getElementById('role-modal-user').textContent = `${USERS[idx].name} (${USERS[idx].email})`;
+      document.getElementById('role-select').value = USERS[idx].role;
+      const modal = document.getElementById('role-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    const closeRoleModal = () => {
+      const modal = document.getElementById('role-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    };
+
+    document.getElementById('cancel-role').addEventListener('click', closeRoleModal);
+    document.getElementById('save-role').addEventListener('click', () => {
+      if (editingIdx !== null) {
+        USERS[editingIdx].role = document.getElementById('role-select').value;
+        USERS[editingIdx].status = 'Active';
+        renderUsers();
+      }
+      closeRoleModal();
+    });
+
+    renderUsers();
+  </script>
+</body>
+</html>

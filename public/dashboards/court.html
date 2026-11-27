@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Court/ODPP Dashboard – Salama Digital</title>
+  <script src="/vendor/tailwind.js"></script>
+  <script src="/vendor/lucide.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0D2757', orange: '#F27C22', leaf: '#56B847', deepGreen: '#146C2E', surface: '#F8FAFC',
+          }, fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="font-sans bg-[#F8FAFC] text-[#0D2757] min-h-screen flex">
+  <div id="salama-shell" class="min-h-screen w-full flex"></div>
+
+  <template id="page-content">
+    <div class="space-y-6">
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">Beyond Reporting ·
+            Institutional Partner</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-[#0D2757] tracking-tight flex items-center gap-3">
+            <span class="w-10 h-10 rounded-xl bg-[#0D2757] flex items-center justify-center shrink-0">
+              <i data-lucide="scale" class="w-5 h-5 text-[#56B847]"></i>
+            </span>
+            Institutional Workspace: ODPP &amp; Judiciary
+          </h1>
+          <p class="mt-1.5 text-sm text-slate-500">Case progression &amp; prosecution metrics, Mombasa &amp; Kilifi.</p>
+        </div>
+        <span
+          class="inline-flex items-center gap-1.5 self-start px-3 py-1.5 rounded-full bg-[#0D2757]/5 border border-[#0D2757]/10 text-xs font-semibold text-[#0D2757]">
+          <span class="w-2 h-2 rounded-full bg-[#56B847] animate-pulse"></span>
+          <span>Live aggregate feed</span>
+        </span>
+      </div>
+
+      <!-- Data Disclaimer Banner -->
+      <div class="rounded-xl border border-[#F27C22]/40 bg-[#F27C22]/10 px-5 py-4 flex items-start gap-3" role="alert">
+        <i data-lucide="shield-alert" class="w-5 h-5 text-[#F27C22] shrink-0 mt-0.5"></i>
+        <div>
+          <p class="text-sm font-bold text-[#0D2757]">Restricted View: Aggregate case progression metrics only.</p>
+          <p class="text-xs text-slate-600 mt-0.5">No case numbers, party names or individual survivor data are
+            accessible. All figures are de-identified counts per institutional mandate.</p>
+        </div>
+      </div>
+
+      <!-- Metric Cards (static MVP data) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cases Received for
+              Prosecution</span>
+            <i data-lucide="inbox" class="w-4 h-4 text-[#0D2757]/40"></i>
+          </div>
+          <p class="mt-2 text-3xl font-extrabold text-[#0D2757]" data-metric="casesReceived">—</p>
+          <p class="mt-1 text-[11px] text-slate-400">ODPP intake abstraction feed</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cases Filed in Court</span>
+            <i data-lucide="gavel" class="w-4 h-4 text-[#0D2757]/40"></i>
+          </div>
+          <p class="mt-2 text-3xl font-extrabold text-[#0D2757]" data-metric="casesFiled">—</p>
+          <p class="mt-1 text-[11px] text-slate-400">Registered with the Judiciary</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Convictions Secured</span>
+            <i data-lucide="badge-check" class="w-4 h-4 text-[#56B847]"></i>
+          </div>
+          <p class="mt-2 text-3xl font-extrabold text-[#0D2757]" data-metric="convictionsSecured">—</p>
+          <p class="mt-1 text-[11px] text-slate-400">Trial outcomes concluded as convicted</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cases Pending / Adjourned</span>
+            <i data-lucide="hourglass" class="w-4 h-4 text-[#F27C22]"></i>
+          </div>
+          <p class="mt-2 text-3xl font-extrabold text-[#F27C22]" data-metric="casesPendingAdjourned">—</p>
+          <p class="mt-1 text-[11px] text-slate-400">Awaiting hearing or ruling</p>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 class="text-sm font-bold text-[#0D2757] flex items-center gap-2">
+            <i data-lucide="filter" class="w-4 h-4 text-[#0D2757]/50"></i>
+            Case Progression Timeline
+          </h2>
+          <div id="chart-funnel" class="mt-4 space-y-2.5" aria-label="Funnel chart: case progression"></div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 class="text-sm font-bold text-[#0D2757] flex items-center gap-2">
+            <i data-lucide="pie-chart" class="w-4 h-4 text-[#0D2757]/50"></i>
+            Case Outcomes
+          </h2>
+          <div id="chart-outcomes" class="mt-4 flex items-center justify-center gap-8"
+            aria-label="Pie chart: case outcomes"></div>
+        </div>
+      </div>
+
+      <!-- Case Backlog Overview -->
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="text-sm font-bold text-[#0D2757] flex items-center gap-2">
+            <i data-lucide="list-ordered" class="w-4 h-4 text-[#0D2757]/50"></i>
+            Case Backlog Overview
+          </h2>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Strictly aggregate · No case
+            numbers</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr
+                class="text-left text-[11px] uppercase tracking-wider text-slate-400 bg-[#F8FAFC] border-b border-slate-100">
+                <th class="px-5 py-3 font-bold">Case Category</th>
+                <th class="px-5 py-3 font-bold">Number of Active Cases</th>
+                <th class="px-5 py-3 font-bold">Average Time in System</th>
+              </tr>
+            </thead>
+            <tbody id="backlog-rows" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src="/app/js/shell.js"></script>
+  <script>
+    (async function () {
+      window.initSalamaShell({ activeId: 'dashboard-court', breadcrumb: 'Court/ODPP Dashboard' });
+      document.querySelector('main').innerHTML = document.getElementById('page-content').innerHTML;
+      lucide.createIcons();
+
+      // This page is for court_odpp_focal_person accounts only.
+      const me = await fetch('/api/auth/me', { credentials: 'same-origin' }).then((r) => (r.ok ? r.json() : null));
+      if (!me || me.role !== 'court_odpp_focal_person') { window.location.href = '/app/login.html'; return; }
+
+      const data = await fetch('/api/institutional-metrics', { credentials: 'same-origin' }).then((r) => r.json()).catch(() => null);
+      if (!data || data.mandate !== 'court') { window.location.href = '/app/login.html'; return; }
+
+      const set = (k, v) => { const el = document.querySelector(`[data-metric="${k}"]`); if (el) el.textContent = v; };
+      set('casesReceived', data.metrics.casesReceived);
+      set('casesFiled', data.metrics.casesFiled);
+      set('convictionsSecured', data.metrics.convictionsSecured);
+      set('casesPendingAdjourned', data.metrics.casesPendingAdjourned);
+
+      // Funnel chart: Reported -> Charged -> Filed -> Concluded
+      const stages = data.caseProgressionFunnel || [];
+      const max = Math.max(1, ...stages.map((s) => s.cases));
+      const FILL = ['#0D2757', '#1b3f80', '#3d6bc4', '#8fb0e6'];
+      document.getElementById('chart-funnel').innerHTML = stages.map((s, i) => `
+        <div>
+          <div class="flex justify-between text-xs mb-1"><span class="font-semibold text-[#0D2757]">${s.stage}</span><span class="text-slate-500">${s.cases}</span></div>
+          <div class="h-7 rounded-lg bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-lg flex items-center px-2" style="width:${Math.max(8, Math.round((s.cases / max) * 100))}%;background:${FILL[i % FILL.length]}"></div>
+          </div>
+        </div>`).join('');
+
+      // Pie chart: case outcomes
+      const outcomes = (data.caseOutcomes || []).filter((o) => o.cases > 0);
+      const total = Math.max(1, outcomes.reduce((a, o) => a + o.cases, 0));
+      const COLORS = ['#146C2E', '#F27C22', '#64748b', '#94a3b8'];
+      let acc = 0;
+      const arcs = outcomes.map((o, i) => {
+        const start = (acc / total) * 100; acc += o.cases;
+        const end = (acc / total) * 100;
+        return `<circle cx="60" cy="60" r="36" fill="none" stroke="${COLORS[i % COLORS.length]}" stroke-width="20"
+                 stroke-dasharray="${(end - start) * 2.26} 226" stroke-dashoffset="${-start * 2.26}"/>`;
+      }).join('');
+      const legend = outcomes.map((o, i) => `
+        <div class="flex items-center gap-2 text-sm">
+          <span class="w-3 h-3 rounded-full" style="background:${COLORS[i % COLORS.length]}"></span>
+          <span class="font-semibold text-[#0D2757]">${o.outcome}</span><span class="text-slate-500">${o.cases}</span>
+        </div>`).join('') || '<p class="text-sm text-slate-400">No concluded outcomes yet.</p>';
+      document.getElementById('chart-outcomes').innerHTML = `
+        <svg viewBox="0 0 120 120" class="w-40 h-40">${arcs}<circle cx="60" cy="60" r="22" fill="#ffffff"/></svg>
+        <div class="space-y-2">${legend}</div>`;
+
+      // Backlog table
+      const rows = data.caseBacklog || [];
+      document.getElementById('backlog-rows').innerHTML = rows.length ? rows.map((r) => `
+        <tr class="hover:bg-[#F8FAFC]">
+          <td class="px-5 py-3 font-semibold text-[#0D2757]">${r.category}</td>
+          <td class="px-5 py-3 text-[#0D2757]">${r.activeCases}</td>
+          <td class="px-5 py-3 text-[#0D2757]">${r.averageTimeInSystemDays} days</td>
+        </tr>`).join('') : '<tr><td colspan="3" class="px-5 py-6 text-sm text-slate-400 text-center">No case progression records.</td></tr>';
+    })();
+  </script>
+</body>
+
+</html>

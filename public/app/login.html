@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Sign In – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0D2757',
+            orange: '#F27C22',
+            leaf: '#56B847',
+            deepGreen: '#146C2E',
+            surface: '#F8FAFC',
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="font-sans bg-[#F8FAFC] text-[#0D2757] min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Left: Clean Login Form -->
+  <div class="flex-1 flex flex-col justify-between p-6 sm:p-12 lg:p-16 bg-white">
+    <div class="flex items-center justify-between">
+      <a href="/app/index.html" class="inline-flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-lg bg-[#0D2757] flex items-center justify-center shadow-sm">
+          <i data-lucide="shield" class="w-5 h-5 text-[#56B847]"></i>
+        </div>
+        <div>
+          <span class="block text-base font-bold text-[#0D2757] leading-tight">Salama Digital</span>
+          <span class="block text-[10px] font-semibold uppercase tracking-widest text-slate-400">Beyond Reporting</span>
+        </div>
+      </a>
+      <a href="/app/about.html" class="text-xs font-semibold text-[#0D2757] hover:text-[#F27C22] transition-colors">
+        About the Study &rarr;
+      </a>
+    </div>
+
+    <div class="w-full max-w-md mx-auto my-10">
+      <div class="mb-8">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-[#0D2757] text-xs font-semibold mb-3">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-[#56B847]"></i>
+          Authorized Personnel Only
+        </span>
+        <h1 class="text-2xl sm:text-3xl font-bold text-[#0D2757] tracking-tight">Sign in to workspace</h1>
+        <p class="mt-2 text-sm text-slate-500">
+          Enter your institutional credentials to access the Mombasa &amp; Kilifi SGBV research workspace.
+        </p>
+      </div>
+
+      <form id="login-form" class="space-y-5">
+        <div>
+          <label for="email" class="block text-sm font-semibold text-[#0D2757] mb-1.5">Institutional Email</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input id="email" type="email" required placeholder="researcher@institution.org"
+              class="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22] focus:border-[#F27C22] transition-all" />
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-[#0D2757] mb-1.5">Password</label>
+          <div class="relative">
+            <i data-lucide="key-round" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input id="password" type="password" required placeholder="••••••••••••"
+              class="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22] focus:border-[#F27C22] transition-all" />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+          <label class="inline-flex items-center gap-2 cursor-pointer select-none text-slate-600">
+            <input type="checkbox" class="w-4 h-4 rounded border-slate-300 text-[#F27C22] focus:ring-[#F27C22]" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" onclick="alert('Please contact your System Administrator to reset your institutional password and MFA token.'); return false;"
+            class="font-semibold text-[#0D2757] hover:text-[#F27C22] transition-colors">
+            Forgot Password?
+          </a>
+        </div>
+
+        <button type="submit"
+          class="w-full py-2.5 px-4 rounded-lg bg-[#F27C22] hover:bg-[#d96a16] text-white font-semibold text-sm shadow-sm flex items-center justify-center gap-2 transition-all duration-200">
+          <span>Sign In</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+
+      <div class="mt-6 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
+        <span class="text-slate-500">Need research access?</span>
+        <a href="/app/request-access.html" class="font-semibold text-[#146C2E] hover:text-[#56B847] transition-colors">
+          Request Access &rarr;
+        </a>
+      </div>
+    </div>
+
+    <div class="text-xs text-slate-400 border-t border-slate-100 pt-4">
+      Salama Digital is a secure research workspace. It is not a public case-reporting portal or clinical record system.
+    </div>
+  </div>
+
+  <!-- Right: Brand Gradient & Security Notice -->
+  <div class="lg:w-1/2 bg-gradient-to-br from-[#0D2757] via-[#123470] to-[#091b3d] text-white p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#56B847]/10 blur-2xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#F27C22]/10 blur-2xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-[#56B847] flex items-center justify-center shadow-lg">
+        <i data-lucide="shield-check" class="w-6 h-6 text-[#0D2757]"></i>
+      </div>
+      <div>
+        <div class="text-xl font-bold tracking-tight">Salama Digital</div>
+        <div class="text-xs font-semibold uppercase tracking-widest text-[#56B847]">Innovate • Connect • Serve</div>
+      </div>
+    </div>
+
+    <div class="relative z-10 my-12 space-y-6 max-w-lg">
+      <h2 class="text-3xl sm:text-4xl font-bold leading-tight">
+        Evidence-driven insights for SGBV prevention &amp; response.
+      </h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+        Supporting the <strong class="text-white">Beyond Reporting</strong> longitudinal study across Mombasa and Kilifi counties through privacy-preserving data abstraction, service mapping, and institutional readiness tracking.
+      </p>
+
+      <div class="grid sm:grid-cols-2 gap-4 pt-2">
+        <div class="rounded-xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm">
+          <div class="flex items-center gap-2 text-sm font-semibold text-[#56B847] mb-1">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+            <span>Data Protection</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Role-based access control, multi-factor authentication, and strict de-identification of all study records.
+          </p>
+        </div>
+        <div class="rounded-xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm">
+          <div class="flex items-center gap-2 text-sm font-semibold text-[#F27C22] mb-1">
+            <i data-lucide="file-check-2" class="w-4 h-4"></i>
+            <span>Audit &amp; Governance</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Every workspace session and data abstraction event is logged for ethical and institutional compliance.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative z-10 text-xs text-slate-300 flex items-center justify-between border-t border-white/15 pt-4">
+      <span>Mombasa &amp; Kilifi Counties • Research Platform</span>
+      <a href="/app/index.html" class="text-white font-semibold hover:text-[#F27C22] transition-colors">Preview Workspace &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Post-login navigation: institutional partners land on their own dashboard.
+    const HOME_FOR_ROLE = {
+      police_dci_focal_person: '/dashboard/police.html',
+      court_odpp_focal_person: '/dashboard/court.html',
+    };
+    const DEFAULT_HOME = '/app/index.html';
+
+    document.getElementById('login-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const btn = this.querySelector('button[type=submit]');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value,
+          }),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          alert(body.message || 'Sign-in failed. Check your credentials and MFA code.');
+          btn.disabled = false;
+          return;
+        }
+        // mfa_required / password change are handled by the workspace shell after landing
+        window.location.href = HOME_FOR_ROLE[body.user?.role] || DEFAULT_HOME;
+      } catch {
+        alert('Network error. Please try again.');
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Evidence &amp; Reports – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/shell.js"></script>
+</head>
+<body>
+  <div id="salama-shell">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-[#0D2757]">Evidence &amp; Reports</h1>
+        <p class="text-sm text-slate-500 mt-1">Official Beyond Reporting deliverables, county policy briefs, and platform evaluations.</p>
+      </div>
+      <div class="relative w-full sm:w-64">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+        <input id="rep-search" type="text" placeholder="Search reports..."
+          class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22]" />
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-[#0D2757] text-white text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-5 py-3.5 font-semibold">Report Name</th>
+              <th class="px-5 py-3.5 font-semibold">Scope</th>
+              <th class="px-5 py-3.5 font-semibold">Date Generated</th>
+              <th class="px-5 py-3.5 font-semibold">File Type</th>
+              <th class="px-5 py-3.5 font-semibold text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="reports-tbody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+
+      <div id="reports-empty" class="hidden py-12 px-6 text-center">
+        <i data-lucide="file-x" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+        <p class="text-sm font-bold text-[#0D2757]">No reports match your search</p>
+      </div>
+
+      <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+        <span id="reports-count"></span>
+        <span>All outputs contain aggregated, non-identifying findings only</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    initSalamaShell({ activeId: 'reports', breadcrumb: 'Evidence & Reports', pageTitle: 'Evidence & Reports' });
+
+    const REPORTS = [
+      { name: 'Two-County Research Report', scope: 'Mombasa & Kilifi', date: '2025-02-14', type: 'PDF • 4.2 MB' },
+      { name: 'Mombasa County Brief', scope: 'Mombasa County', date: '2025-01-28', type: 'PDF • 1.8 MB' },
+      { name: 'Kilifi County Brief', scope: 'Kilifi County', date: '2025-01-28', type: 'PDF • 1.7 MB' },
+      { name: 'Verified Service and Referral-Pathway Map', scope: '42 Facilities', date: '2025-02-05', type: 'PDF • 3.1 MB' },
+      { name: 'Salama Digital Evaluation Report', scope: 'Platform & Governance', date: '2025-02-20', type: 'PDF • 2.4 MB' },
+    ];
+
+    function renderReports() {
+      const q = document.getElementById('rep-search').value.trim().toLowerCase();
+      const rows = REPORTS.filter((r) => !q || r.name.toLowerCase().includes(q) || r.scope.toLowerCase().includes(q));
+      const tbody = document.getElementById('reports-tbody');
+      const empty = document.getElementById('reports-empty');
+
+      if (!rows.length) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        tbody.innerHTML = rows.map((r) => `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="px-5 py-4 font-semibold text-[#0D2757] flex items-center gap-2.5">
+              <i data-lucide="file-text" class="w-4 h-4 text-[#F27C22] shrink-0"></i>
+              <span>${r.name}</span>
+            </td>
+            <td class="px-5 py-4 text-slate-600">${r.scope}</td>
+            <td class="px-5 py-4 text-slate-600">${r.date}</td>
+            <td class="px-5 py-4">
+              <span class="px-2.5 py-0.5 rounded-md bg-slate-100 text-[#0D2757] text-xs font-semibold">${r.type}</span>
+            </td>
+            <td class="px-5 py-4 text-right">
+              <button onclick="downloadReport('${r.name}')"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#56B847] hover:bg-[#146C2E] text-[#0D2757] hover:text-white text-xs font-semibold transition-all duration-200">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span>Download</span>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+      document.getElementById('reports-count').textContent = `Showing ${rows.length} of ${REPORTS.length} deliverables`;
+      lucide.createIcons();
+    }
+
+    window.downloadReport = function (name) {
+      const blob = new Blob([`Salama Digital – ${name}\nBeyond Reporting Research Output (Preview)`], { type: 'application/pdf' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.pdf';
+      a.click();
+    };
+
+    document.getElementById('rep-search').addEventListener('input', renderReports);
+    renderReports();
+  </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Service &amp; Referral Mapping – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/shell.js"></script>
+</head>
+<body>
+  <div id="salama-shell">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-[#0D2757]">Service &amp; Referral Mapping</h1>
+        <p class="text-sm text-slate-500 mt-1">Verified SGBV response facilities and cross-institutional referral pathway metrics.</p>
+      </div>
+    </div>
+
+    <!-- Referral Pathway Analysis -->
+    <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-6">
+      <div class="flex items-center gap-2 mb-4">
+        <i data-lucide="git-branch" class="w-5 h-5 text-[#F27C22]"></i>
+        <h2 class="text-base font-bold text-[#0D2757]">Referral Pathway Analysis</h2>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="p-4 rounded-xl bg-[#F8FAFC] border border-slate-200">
+          <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Avg. Time to Referral Completion</div>
+          <div class="mt-1.5 text-2xl font-bold text-[#0D2757]">4.2 days</div>
+          <div class="mt-1 text-xs text-[#146C2E] font-medium">Across Health &rarr; Police &rarr; Shelter</div>
+        </div>
+        <div class="p-4 rounded-xl bg-[#F8FAFC] border border-slate-200">
+          <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Verified Active Facilities</div>
+          <div class="mt-1.5 text-2xl font-bold text-[#0D2757]">38 / 42</div>
+          <div class="mt-1 text-xs text-slate-500">90.5% directory verification rate</div>
+        </div>
+        <div class="p-4 rounded-xl bg-[#F8FAFC] border border-slate-200">
+          <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">72-Hour PEP Linkage Rate</div>
+          <div class="mt-1.5 text-2xl font-bold text-[#0D2757]">68%</div>
+          <div class="mt-1 text-xs text-[#F27C22] font-medium">Target: &ge;85% across rural sites</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-6 flex flex-col sm:flex-row gap-3">
+      <div class="relative flex-1">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+        <input id="dir-search" type="text" placeholder="Search facility name or sub-county..."
+          class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22]" />
+      </div>
+      <select id="dir-type" class="px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+        <option value="">All Service Types</option>
+        <option value="Health">Health</option>
+        <option value="Police">Police</option>
+        <option value="NGO">NGO</option>
+      </select>
+      <select id="dir-county" class="px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+        <option value="">All Counties</option>
+        <option value="Mombasa">Mombasa</option>
+        <option value="Kilifi">Kilifi</option>
+      </select>
+    </div>
+
+    <!-- Directory Grid -->
+    <div id="dir-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+    <!-- Empty State -->
+    <div id="dir-empty" class="hidden bg-white border border-slate-200 rounded-xl py-12 px-6 text-center">
+      <i data-lucide="map-pin-off" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+      <h3 class="text-sm font-bold text-[#0D2757]">No facilities found matching your filters</h3>
+      <p class="mt-1 text-xs text-slate-500">Adjust the service type or county filter to view mapped facilities.</p>
+    </div>
+  </div>
+
+  <!-- Details Modal -->
+  <div id="facility-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
+      <div class="flex items-start justify-between gap-3 mb-4">
+        <div>
+          <span id="modal-type" class="text-xs font-bold uppercase tracking-wider text-[#F27C22]"></span>
+          <h3 id="modal-title" class="text-lg font-bold text-[#0D2757] mt-0.5"></h3>
+        </div>
+        <button id="close-modal" class="p-1 rounded-lg text-slate-400 hover:text-[#0D2757] hover:bg-slate-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="space-y-2.5 text-sm text-slate-600">
+        <p><strong class="text-[#0D2757]">Location:</strong> <span id="modal-loc"></span></p>
+        <p><strong class="text-[#0D2757]">Operating Hours:</strong> <span id="modal-hours"></span></p>
+        <p><strong class="text-[#0D2757]">Core Services:</strong> <span id="modal-services"></span></p>
+      </div>
+      <div class="mt-6 flex justify-end">
+        <button id="modal-ok" class="px-4 py-2 rounded-lg bg-[#0D2757] text-white text-sm font-semibold hover:bg-[#163a7a] transition-colors">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    initSalamaShell({ activeId: 'directory', breadcrumb: 'Service & Referral Map', pageTitle: 'Service & Referral Mapping' });
+
+    const FACILITIES = [
+      { name: 'Coast General Teaching & Referral GBVRC', type: 'Health', county: 'Mombasa', loc: 'Mombasa • Mvita', verified: true, hours: '24/7 Emergency & Clinical', services: 'Clinical PEP, Forensic Exam, Psychosocial Care' },
+      { name: 'Mombasa Central Police Gender Desk', type: 'Police', county: 'Mombasa', loc: 'Mombasa • Urban', verified: true, hours: '24/7 Desk Coverage', services: 'OB Filing, P3 Form Issuance, Protection Linkage' },
+      { name: 'Kilifi County Referral Hospital GBVRC', type: 'Health', county: 'Kilifi', loc: 'Kilifi • Township', verified: true, hours: 'Mon–Sun, 08:00–20:00', services: 'Medical Care, Trauma Counselling, Legal Referral' },
+      { name: 'Pwani Women & Youth Safe Shelter', type: 'NGO', county: 'Mombasa', loc: 'Mombasa • Likoni', verified: true, hours: '24/7 Intake by Referral', services: 'Emergency Shelter, Legal Aid, Reintegration' },
+      { name: 'Malindi Sub-County Police Gender Desk', type: 'Police', county: 'Kilifi', loc: 'Kilifi • Malindi', verified: true, hours: '24/7 Desk Coverage', services: 'Case Documentation, Child Protection Liaison' },
+      { name: 'Ganze Community Advocacy Network', type: 'NGO', county: 'Kilifi', loc: 'Kilifi • Rural', verified: false, hours: 'Mon–Fri, 08:00–17:00', services: 'Community Mediation, Paralegal Support' },
+    ];
+
+    function renderDir() {
+      const q = document.getElementById('dir-search').value.trim().toLowerCase();
+      const t = document.getElementById('dir-type').value;
+      const c = document.getElementById('dir-county').value;
+      const items = FACILITIES.filter((f) =>
+        (!q || f.name.toLowerCase().includes(q) || f.loc.toLowerCase().includes(q)) &&
+        (!t || f.type === t) &&
+        (!c || f.county === c)
+      );
+
+      const grid = document.getElementById('dir-grid');
+      const empty = document.getElementById('dir-empty');
+
+      if (!items.length) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        grid.innerHTML = items.map((f, idx) => `
+          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="px-2.5 py-1 rounded-md bg-slate-100 text-[#0D2757] text-xs font-semibold">${f.type}</span>
+                ${f.verified
+                  ? '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#56B847]/15 text-[#146C2E] text-xs font-semibold"><i data-lucide="badge-check" class="w-3.5 h-3.5"></i>Verified</span>'
+                  : '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold">Pending</span>'}
+              </div>
+              <h3 class="text-base font-bold text-[#0D2757] leading-snug">${f.name}</h3>
+              <p class="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#F27C22]"></i>
+                <span>${f.loc}</span>
+              </p>
+            </div>
+            <button onclick="openFacility(${FACILITIES.indexOf(f)})"
+              class="mt-5 w-full py-2 px-3 rounded-lg border border-[#0D2757] text-[#0D2757] hover:bg-[#0D2757] hover:text-white text-xs font-semibold transition-all duration-200">
+              View Details
+            </button>
+          </div>
+        `).join('');
+      }
+      lucide.createIcons();
+    }
+
+    window.openFacility = function (idx) {
+      const f = FACILITIES[idx];
+      document.getElementById('modal-type').textContent = f.type + ' Facility';
+      document.getElementById('modal-title').textContent = f.name;
+      document.getElementById('modal-loc').textContent = f.loc;
+      document.getElementById('modal-hours').textContent = f.hours;
+      document.getElementById('modal-services').textContent = f.services;
+      const modal = document.getElementById('facility-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    const closeModal = () => {
+      const modal = document.getElementById('facility-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    };
+    document.getElementById('close-modal').addEventListener('click', closeModal);
+    document.getElementById('modal-ok').addEventListener('click', closeModal);
+
+    ['dir-search', 'dir-type', 'dir-county'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', renderDir);
+    });
+    renderDir();
+  </script>
+</body>
+</html>

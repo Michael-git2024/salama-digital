@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Fieldwork Dashboard – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/shell.js"></script>
+</head>
+<body>
+  <div id="salama-shell">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-[#0D2757]">Fieldwork Dashboard</h1>
+        <p class="text-sm text-slate-500 mt-1">Field Supervisor monitoring for enumerator assignments, completion progress, and quality flags.</p>
+      </div>
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-[#0D2757] shadow-sm">
+        <i data-lucide="user-check" class="w-4 h-4 text-[#56B847]"></i>
+        <span>Supervisor View</span>
+      </span>
+    </div>
+
+    <!-- Overall Site Completion Progress Card -->
+    <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+        <div>
+          <h2 class="text-base font-bold text-[#0D2757]">Overall Site Completion (Mombasa &amp; Kilifi)</h2>
+          <p class="text-xs text-slate-500">33 of 42 assigned study sites have met target sample thresholds</p>
+        </div>
+        <span class="text-xl font-bold text-[#146C2E]">78%</span>
+      </div>
+      <div class="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+        <div class="h-full bg-gradient-to-r from-[#56B847] to-[#146C2E] rounded-full transition-all duration-500" style="width: 78%"></div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-6 text-xs text-slate-600">
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#56B847]"></span>Mombasa: 84% complete</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#F27C22]"></span>Kilifi: 71% complete</span>
+      </div>
+    </section>
+
+    <!-- Enumerator Assignments Table -->
+    <section class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h2 class="text-base font-bold text-[#0D2757]">Enumerator Assignments</h2>
+        <div class="relative w-full sm:w-64">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input id="enum-search" type="text" placeholder="Filter enumerator or site..."
+            class="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#F27C22]" />
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-[#0D2757] text-white text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-5 py-3.5 font-semibold">Enumerator Name</th>
+              <th class="px-5 py-3.5 font-semibold">Assigned Site</th>
+              <th class="px-5 py-3.5 font-semibold">Surveys Completed</th>
+              <th class="px-5 py-3.5 font-semibold">Missing Items Flagged</th>
+              <th class="px-5 py-3.5 font-semibold">Status</th>
+            </tr>
+          </thead>
+          <tbody id="enum-tbody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+
+      <div id="enum-empty" class="hidden py-12 px-6 text-center">
+        <i data-lucide="clipboard-x" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+        <p class="text-sm font-semibold text-[#0D2757]">No enumerator assignments match your search</p>
+      </div>
+
+      <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+        <span id="enum-count"></span>
+        <span>Updated daily at 18:00 EAT</span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    initSalamaShell({ activeId: 'fieldwork', breadcrumb: 'Fieldwork Dashboard', pageTitle: 'Fieldwork Dashboard' });
+
+    const ASSIGNMENTS = [
+      { name: 'Fatuma Omar', site: 'Likoni Urban/Informal (Mombasa)', completed: 142, flagged: 1, status: 'On Track' },
+      { name: 'Daniel Charo', site: 'Malindi Sub-County (Kilifi)', completed: 118, flagged: 3, status: 'Needs Review' },
+      { name: 'Grace Wanjiku', site: 'Mvita Central (Mombasa)', completed: 164, flagged: 0, status: 'Completed' },
+      { name: 'Samuel Mwangi', site: 'Kaloleni Rural (Kilifi)', completed: 89, flagged: 2, status: 'On Track' },
+      { name: 'Halima Bakari', site: 'Kisauni North (Mombasa)', completed: 131, flagged: 1, status: 'On Track' },
+      { name: 'Peter Kazungu', site: 'Ganze Rural (Kilifi)', completed: 64, flagged: 0, status: 'On Track' },
+    ];
+
+    function renderEnums() {
+      const q = document.getElementById('enum-search').value.trim().toLowerCase();
+      const rows = ASSIGNMENTS.filter((a) => !q || a.name.toLowerCase().includes(q) || a.site.toLowerCase().includes(q));
+      const tbody = document.getElementById('enum-tbody');
+      const empty = document.getElementById('enum-empty');
+
+      if (!rows.length) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        tbody.innerHTML = rows.map((a) => `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="px-5 py-3.5 font-semibold text-[#0D2757]">${a.name}</td>
+            <td class="px-5 py-3.5 text-slate-600">${a.site}</td>
+            <td class="px-5 py-3.5 font-semibold text-[#0D2757]">${a.completed}</td>
+            <td class="px-5 py-3.5">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${a.flagged > 0 ? 'bg-[#F27C22]/15 text-[#F27C22]' : 'bg-[#56B847]/15 text-[#146C2E]'}">
+                ${a.flagged} flagged
+              </span>
+            </td>
+            <td class="px-5 py-3.5">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${a.status === 'Needs Review' ? 'bg-amber-100 text-amber-800' : 'bg-[#56B847]/15 text-[#146C2E]'}">
+                ${a.status}
+              </span>
+            </td>
+          </tr>
+        `).join('');
+      }
+      document.getElementById('enum-count').textContent = `Showing ${rows.length} of ${ASSIGNMENTS.length} enumerators`;
+      lucide.createIcons();
+    }
+
+    document.getElementById('enum-search').addEventListener('input', renderEnums);
+    renderEnums();
+  </script>
+</body>
+</html>

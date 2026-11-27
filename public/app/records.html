@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Research Records – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/shell.js"></script>
+</head>
+<body>
+  <div id="salama-shell">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-[#0D2757]">Research Records</h1>
+        <p class="text-sm text-slate-500 mt-1">De-identified, coded records abstracted across Mombasa and Kilifi study sites.</p>
+      </div>
+      <button id="export-csv-btn"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#56B847] hover:bg-[#146C2E] text-[#0D2757] hover:text-white font-semibold text-sm shadow-sm transition-all duration-200">
+        <i data-lucide="download" class="w-4 h-4"></i>
+        <span>Download CSV</span>
+      </button>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input id="search-id" type="text" placeholder="Search by Study ID..."
+            class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22]" />
+        </div>
+        <select id="filter-county" class="px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+          <option value="">All Counties</option>
+          <option value="Mombasa">Mombasa</option>
+          <option value="Kilifi">Kilifi</option>
+        </select>
+        <select id="filter-site" class="px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+          <option value="">All Site Types</option>
+          <option value="Urban">Urban</option>
+          <option value="Urban/Informal">Urban/Informal</option>
+          <option value="Rural">Rural</option>
+        </select>
+        <select id="filter-category" class="px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+          <option value="">All SGBV Categories</option>
+          <option value="IPV">IPV</option>
+          <option value="Sexual Violence">Sexual Violence</option>
+          <option value="Child/Forced Marriage">Child/Forced Marriage</option>
+          <option value="TFGBV">TFGBV</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-[#0D2757] text-white text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-5 py-3.5 font-semibold">Study ID</th>
+              <th class="px-5 py-3.5 font-semibold">County</th>
+              <th class="px-5 py-3.5 font-semibold">Site Type</th>
+              <th class="px-5 py-3.5 font-semibold">Age Band</th>
+              <th class="px-5 py-3.5 font-semibold">SGBV Category</th>
+              <th class="px-5 py-3.5 font-semibold">Referral Status</th>
+            </tr>
+          </thead>
+          <tbody id="records-tbody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div id="records-empty" class="hidden py-14 px-6 text-center">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="folder-search" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-sm font-bold text-[#0D2757]">No records found matching your filters</h3>
+        <p class="mt-1 text-xs text-slate-500">Try clearing your Study ID search or selecting a broader county/category filter.</p>
+        <button id="reset-filters-btn" class="mt-4 px-4 py-2 rounded-lg border border-[#0D2757] text-xs font-semibold text-[#0D2757] hover:bg-[#0D2757] hover:text-white transition-colors">
+          Reset Filters
+        </button>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <span id="records-count" class="text-xs text-slate-600 font-medium"></span>
+        <div class="flex items-center gap-2">
+          <button id="prev-page" class="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-[#0D2757] hover:bg-slate-100 disabled:opacity-40 transition-colors">
+            &laquo; Prev
+          </button>
+          <span id="page-indicator" class="text-xs font-semibold text-slate-600 px-2"></span>
+          <button id="next-page" class="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-[#0D2757] hover:bg-slate-100 disabled:opacity-40 transition-colors">
+            Next &raquo;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    initSalamaShell({ activeId: 'records', breadcrumb: 'Research Records', pageTitle: 'Research Records' });
+
+    const RECORDS = [
+      { id: 'SD-MSA-001', county: 'Mombasa', site: 'Urban/Informal', age: '18–24', category: 'IPV', status: 'Completed' },
+      { id: 'SD-KLF-002', county: 'Kilifi', site: 'Rural', age: '25–34', category: 'Sexual Violence', status: 'Initiated' },
+      { id: 'SD-MSA-003', county: 'Mombasa', site: 'Urban', age: '15–17', category: 'TFGBV', status: 'Completed' },
+      { id: 'SD-KLF-004', county: 'Kilifi', site: 'Rural', age: '15–17', category: 'Child/Forced Marriage', status: 'Not Documented' },
+      { id: 'SD-MSA-005', county: 'Mombasa', site: 'Urban/Informal', age: '35–44', category: 'IPV', status: 'Completed' },
+      { id: 'SD-KLF-006', county: 'Kilifi', site: 'Urban', age: '18–24', category: 'Sexual Violence', status: 'Initiated' },
+      { id: 'SD-MSA-007', county: 'Mombasa', site: 'Urban', age: '25–34', category: 'TFGBV', status: 'Not Documented' },
+      { id: 'SD-KLF-008', county: 'Kilifi', site: 'Rural', age: '45+', category: 'IPV', status: 'Completed' },
+      { id: 'SD-MSA-009', county: 'Mombasa', site: 'Urban/Informal', age: '18–24', category: 'Sexual Violence', status: 'Completed' },
+      { id: 'SD-KLF-010', county: 'Kilifi', site: 'Rural', age: '15–17', category: 'Child/Forced Marriage', status: 'Initiated' },
+    ];
+
+    const PAGE_SIZE = 6;
+    let currentPage = 1;
+
+    const badgeClass = (status) => {
+      if (status === 'Completed') return 'bg-[#56B847]/15 text-[#146C2E] border border-[#56B847]/40';
+      if (status === 'Initiated') return 'bg-amber-100 text-amber-800 border border-amber-300';
+      return 'bg-slate-100 text-slate-600 border border-slate-300';
+    };
+
+    function getFiltered() {
+      const q = document.getElementById('search-id').value.trim().toLowerCase();
+      const c = document.getElementById('filter-county').value;
+      const s = document.getElementById('filter-site').value;
+      const cat = document.getElementById('filter-category').value;
+      return RECORDS.filter((r) =>
+        (!q || r.id.toLowerCase().includes(q)) &&
+        (!c || r.county === c) &&
+        (!s || r.site === s) &&
+        (!cat || r.category === cat)
+      );
+    }
+
+    function render() {
+      const rows = getFiltered();
+      const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = totalPages;
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const slice = rows.slice(start, start + PAGE_SIZE);
+
+      const tbody = document.getElementById('records-tbody');
+      const empty = document.getElementById('records-empty');
+
+      if (!slice.length) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        tbody.innerHTML = slice.map((r) => `
+          <tr class="hover:bg-slate-50 transition-colors duration-150">
+            <td class="px-5 py-3.5 font-mono font-semibold text-[#0D2757]">${r.id}</td>
+            <td class="px-5 py-3.5 text-slate-700">${r.county}</td>
+            <td class="px-5 py-3.5 text-slate-600">${r.site}</td>
+            <td class="px-5 py-3.5 text-slate-600">${r.age}</td>
+            <td class="px-5 py-3.5 font-medium text-[#0D2757]">${r.category}</td>
+            <td class="px-5 py-3.5">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${badgeClass(r.status)}">
+                ${r.status}
+              </span>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      document.getElementById('records-count').textContent = rows.length
+        ? `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, rows.length)} of ${rows.length} records`
+        : '0 records found';
+      document.getElementById('page-indicator').textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById('prev-page').disabled = currentPage <= 1;
+      document.getElementById('next-page').disabled = currentPage >= totalPages;
+      lucide.createIcons();
+    }
+
+    ['search-id', 'filter-county', 'filter-site', 'filter-category'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', () => { currentPage = 1; render(); });
+    });
+    document.getElementById('prev-page').addEventListener('click', () => { currentPage--; render(); });
+    document.getElementById('next-page').addEventListener('click', () => { currentPage++; render(); });
+    document.getElementById('reset-filters-btn').addEventListener('click', () => {
+      ['search-id', 'filter-county', 'filter-site', 'filter-category'].forEach((id) => { document.getElementById(id).value = ''; });
+      currentPage = 1;
+      render();
+    });
+
+    document.getElementById('export-csv-btn').addEventListener('click', () => {
+      const rows = getFiltered();
+      const csv = ['Study ID,County,Site Type,Age Band,SGBV Category,Referral Status',
+        ...rows.map((r) => `${r.id},${r.county},${r.site},${r.age},${r.category},${r.status}`)].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'salama-research-records.csv';
+      a.click();
+    });
+
+    render();
+  </script>
+</body>
+</html>

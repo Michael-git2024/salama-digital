@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Administrative Record Abstraction – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/shell.js"></script>
+</head>
+<body>
+  <div id="salama-shell">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-[#0D2757]">Administrative Record Abstraction</h1>
+      <p class="text-sm text-slate-500 mt-1">Structured extraction of de-identified institutional register entries into the Beyond Reporting data dictionary.</p>
+    </div>
+
+    <!-- Methodological Warning Banner -->
+    <div class="mb-6 rounded-xl bg-[#F27C22]/10 border border-[#F27C22]/40 p-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-lg bg-[#F27C22] text-white flex items-center justify-center shrink-0">
+        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+      </div>
+      <div>
+        <h2 class="text-sm font-bold text-[#0D2757]">Methodological Notice</h2>
+        <p class="text-xs sm:text-sm text-[#0D2757]/90 mt-0.5 font-medium">
+          Do not infer population prevalence from administrative records. Institutional registers reflect service-seeking events only.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-6">
+      <!-- Form -->
+      <div class="lg:col-span-3 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <h2 class="text-base font-bold text-[#0D2757] mb-4">New Institutional Abstraction</h2>
+        <form id="abstraction-form" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="source-inst" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Source Institution</label>
+              <select id="source-inst" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+                <option value="Police Gender Desk">Police Gender Desk</option>
+                <option value="Coast General GBVRC">Coast General GBVRC</option>
+                <option value="Kilifi County Referral GBVRC">Kilifi County Referral GBVRC</option>
+                <option value="NGO Safe Shelter">NGO Safe Shelter</option>
+                <option value="Sub-County Children's Office">Sub-County Children's Office</option>
+              </select>
+            </div>
+            <div>
+              <label for="record-period" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Record Period</label>
+              <select id="record-period" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+                <option value="Q1 2024">Q1 2024</option>
+                <option value="Q2 2024">Q2 2024</option>
+                <option value="Q3 2024">Q3 2024</option>
+                <option value="Q4 2024">Q4 2024</option>
+                <option value="Q1 2025">Q1 2025</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="abs-county" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">County</label>
+              <select id="abs-county" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+                <option value="Mombasa">Mombasa</option>
+                <option value="Kilifi">Kilifi</option>
+              </select>
+            </div>
+            <div>
+              <label for="abs-domain" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">SGBV Domain</label>
+              <select id="abs-domain" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+                <option value="IPV">Intimate Partner Violence (IPV)</option>
+                <option value="Sexual Violence">Sexual Violence</option>
+                <option value="Child/Forced Marriage">Child / Forced Marriage</option>
+                <option value="TFGBV">Technology-Facilitated GBV (TFGBV)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Referral Initiated</label>
+              <div class="flex gap-3">
+                <label class="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-slate-300 text-sm cursor-pointer hover:bg-slate-50">
+                  <input type="radio" name="referral-init" value="Yes" checked class="text-[#F27C22] focus:ring-[#F27C22]" />
+                  <span>Yes</span>
+                </label>
+                <label class="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-slate-300 text-sm cursor-pointer hover:bg-slate-50">
+                  <input type="radio" name="referral-init" value="No" class="text-[#F27C22] focus:ring-[#F27C22]" />
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label for="completion-status" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Completion Status</label>
+              <select id="completion-status" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+                <option value="Completed">Completed</option>
+                <option value="Not Documented">Not Documented</option>
+                <option value="Not Completed">Not Completed</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="abs-notes" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Register Completeness Notes (Non-PII)</label>
+            <textarea id="abs-notes" rows="2" placeholder="Record any missing register fields or referral linkage gaps (never enter names or phone numbers)..."
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22]"></textarea>
+          </div>
+
+          <button type="submit"
+            class="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[#F27C22] hover:bg-[#d96a16] text-white font-semibold text-sm shadow-sm inline-flex items-center justify-center gap-2 transition-all duration-200">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            <span>Save Abstracted Record</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Recent Abstracted Entries -->
+      <div class="lg:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-base font-bold text-[#0D2757]">Recent Abstractions</h2>
+          <span class="px-2 py-0.5 rounded-full bg-slate-100 text-xs font-semibold text-slate-600">Preview Log</span>
+        </div>
+        <div id="abs-log" class="space-y-3 flex-1">
+          <div class="p-3.5 rounded-lg bg-[#F8FAFC] border border-slate-200">
+            <div class="flex items-center justify-between text-xs font-bold text-[#0D2757]">
+              <span>Police Gender Desk</span>
+              <span class="text-slate-500">Q1 2024</span>
+            </div>
+            <div class="mt-1 text-xs text-slate-600">Mombasa • IPV • Referral: Yes</div>
+            <span class="mt-2 inline-block px-2 py-0.5 rounded-full bg-[#56B847]/15 text-[#146C2E] text-[11px] font-semibold">Completed</span>
+          </div>
+          <div class="p-3.5 rounded-lg bg-[#F8FAFC] border border-slate-200">
+            <div class="flex items-center justify-between text-xs font-bold text-[#0D2757]">
+              <span>Kilifi County Referral GBVRC</span>
+              <span class="text-slate-500">Q1 2024</span>
+            </div>
+            <div class="mt-1 text-xs text-slate-600">Kilifi • Sexual Violence • Referral: Yes</div>
+            <span class="mt-2 inline-block px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[11px] font-semibold">Not Documented</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    initSalamaShell({ activeId: 'abstraction', breadcrumb: 'Admin Abstraction', pageTitle: 'Administrative Record Abstraction' });
+
+    document.getElementById('abstraction-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const inst = document.getElementById('source-inst').value;
+      const period = document.getElementById('record-period').value;
+      const county = document.getElementById('abs-county').value;
+      const domain = document.getElementById('abs-domain').value;
+      const refInit = document.querySelector('input[name="referral-init"]:checked').value;
+      const status = document.getElementById('completion-status').value;
+
+      const badge = status === 'Completed'
+        ? 'bg-[#56B847]/15 text-[#146C2E]'
+        : status === 'Not Completed'
+          ? 'bg-[#F27C22]/15 text-[#F27C22]'
+          : 'bg-slate-200 text-slate-700';
+
+      const card = document.createElement('div');
+      card.className = 'p-3.5 rounded-lg bg-[#F8FAFC] border border-[#56B847] transition-all';
+      card.innerHTML = `
+        <div class="flex items-center justify-between text-xs font-bold text-[#0D2757]">
+          <span>${inst}</span>
+          <span class="text-slate-500">${period}</span>
+        </div>
+        <div class="mt-1 text-xs text-slate-600">${county} • ${domain} • Referral: ${refInit}</div>
+        <span class="mt-2 inline-block px-2 py-0.5 rounded-full ${badge} text-[11px] font-semibold">${status}</span>
+      `;
+      document.getElementById('abs-log').prepend(card);
+      this.reset();
+    });
+  </script>
+</body>
+</html>

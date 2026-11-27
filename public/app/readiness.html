@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Institutional Readiness – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/shell.js"></script>
+</head>
+<body>
+  <div id="salama-shell">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-[#0D2757]">Institutional Readiness</h1>
+        <p class="text-sm text-slate-500 mt-1">Structured readiness checklist across partner Police Gender Desks, GBVRCs, and Shelters.</p>
+      </div>
+      <div class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-[#0D2757] shadow-sm">
+        4 Institutions Audited
+      </div>
+    </div>
+
+    <div id="readiness-list" class="space-y-6"></div>
+  </div>
+
+  <script>
+    initSalamaShell({ activeId: 'readiness', breadcrumb: 'Institutional Readiness', pageTitle: 'Institutional Readiness' });
+
+    const INSTITUTIONS = [
+      {
+        name: 'Mombasa Central Police Gender Desk',
+        county: 'Mombasa • Police',
+        checks: [
+          { label: 'Operating Hours Verified', value: 'Yes' },
+          { label: 'Privacy Space Available', value: 'Partial' },
+          { label: 'Staffing Adequate', value: 'Yes' },
+        ],
+      },
+      {
+        name: 'Coast General Teaching & Referral GBVRC',
+        county: 'Mombasa • Health',
+        checks: [
+          { label: 'Operating Hours Verified', value: 'Yes' },
+          { label: 'Privacy Space Available', value: 'Yes' },
+          { label: 'Staffing Adequate', value: 'Yes' },
+        ],
+      },
+      {
+        name: 'Malindi Sub-County Police Gender Desk',
+        county: 'Kilifi • Police',
+        checks: [
+          { label: 'Operating Hours Verified', value: 'Yes' },
+          { label: 'Privacy Space Available', value: 'No' },
+          { label: 'Staffing Adequate', value: 'Partial' },
+        ],
+      },
+      {
+        name: 'Kilifi County Referral Hospital GBVRC',
+        county: 'Kilifi • Health',
+        checks: [
+          { label: 'Operating Hours Verified', value: 'Yes' },
+          { label: 'Privacy Space Available', value: 'Yes' },
+          { label: 'Staffing Adequate', value: 'Partial' },
+        ],
+      },
+    ];
+
+    const OPTIONS = ['Yes', 'Partial', 'No'];
+
+    function btnStyle(option, current) {
+      if (option !== current) return 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50';
+      if (option === 'Yes') return 'bg-[#56B847] text-[#0D2757] border-[#56B847] font-bold';
+      if (option === 'Partial') return 'bg-[#F27C22] text-white border-[#F27C22] font-bold';
+      return 'bg-[#0D2757] text-white border-[#0D2757] font-bold';
+    }
+
+    function renderReadiness() {
+      const container = document.getElementById('readiness-list');
+      container.innerHTML = INSTITUTIONS.map((inst, iIdx) => `
+        <section class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+          <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base font-bold text-[#0D2757]">${inst.name}</h2>
+              <p class="text-xs text-slate-500">${inst.county}</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#146C2E]">
+              <i data-lucide="shield-check" class="w-4 h-4"></i>
+              Q1 2025 Audit
+            </span>
+          </div>
+          <div class="divide-y divide-slate-100">
+            ${inst.checks.map((chk, cIdx) => `
+              <div class="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors">
+                <span class="text-sm font-medium text-[#0D2757]">${chk.label}</span>
+                <div class="inline-flex rounded-lg shadow-sm" role="group">
+                  ${OPTIONS.map((opt, oIdx) => {
+                    const round = oIdx === 0 ? 'rounded-l-lg' : oIdx === 2 ? 'rounded-r-lg -ml-px' : '-ml-px';
+                    return `<button type="button" onclick="setCheck(${iIdx}, ${cIdx}, '${opt}')"
+                      class="px-3.5 py-1.5 text-xs border ${round} transition-all duration-150 ${btnStyle(opt, chk.value)}">
+                      ${opt}
+                    </button>`;
+                  }).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    window.setCheck = function (iIdx, cIdx, val) {
+      INSTITUTIONS[iIdx].checks[cIdx].value = val;
+      renderReadiness();
+    };
+
+    renderReadiness();
+  </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Request Access – Salama Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="font-sans bg-[#F8FAFC] text-[#0D2757] min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Left: Brand & Governance Context -->
+  <div class="lg:w-5/12 bg-gradient-to-br from-[#0D2757] to-[#091b3d] text-white p-8 sm:p-12 flex flex-col justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-[#56B847] flex items-center justify-center shadow-md">
+        <i data-lucide="shield" class="w-5 h-5 text-[#0D2757]"></i>
+      </div>
+      <div>
+        <div class="text-lg font-bold">Salama Digital</div>
+        <div class="text-[11px] uppercase tracking-widest text-[#56B847] font-semibold">Innovate • Connect • Serve</div>
+      </div>
+    </div>
+
+    <div class="my-10 space-y-5">
+      <h1 class="text-3xl font-bold leading-tight">Controlled Research Access</h1>
+      <p class="text-sm text-slate-300 leading-relaxed">
+        The Beyond Reporting workspace does not allow open public registration. Accounts are provisioned strictly for vetted study personnel, county focal persons, and partner analysts.
+      </p>
+      <div class="rounded-xl bg-white/10 border border-white/15 p-4 space-y-2">
+        <div class="flex items-center gap-2 text-sm font-semibold text-[#F27C22]">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          <span>Data Protection Review</span>
+        </div>
+        <p class="text-xs text-slate-200 leading-relaxed">
+          Access is restricted to approved research personnel. Requests are subject to Data Protection review and Principal Investigator sign-off.
+        </p>
+      </div>
+    </div>
+
+    <div class="text-xs text-slate-400 border-t border-white/15 pt-4">
+      Salama Digital is a secure research workspace. It is not a public case-reporting portal or clinical record system.
+    </div>
+  </div>
+
+  <!-- Right: Request Access Form -->
+  <div class="flex-1 flex items-center justify-center p-6 sm:p-12">
+    <div class="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-[#0D2757]">Request Workspace Access</h2>
+        <p class="mt-1 text-sm text-slate-500">Complete your institutional details below for verification.</p>
+      </div>
+
+      <div id="request-success" class="hidden mb-6 rounded-xl bg-[#56B847]/10 border border-[#56B847] p-4 text-sm text-[#146C2E]">
+        <div class="flex items-center gap-2 font-semibold">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+          <span>Access Request Submitted</span>
+        </div>
+        <p class="mt-1 text-xs">Your request has been queued for System Administrator and Data Protection review. You will be notified via your institutional email.</p>
+      </div>
+
+      <form id="access-form" class="space-y-4">
+        <div>
+          <label for="fullName" class="block text-sm font-semibold text-[#0D2757] mb-1">Full Name</label>
+          <input id="fullName" type="text" required placeholder="Dr. Amina Hassan"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22]" />
+        </div>
+
+        <div>
+          <label for="instEmail" class="block text-sm font-semibold text-[#0D2757] mb-1">Institutional Email</label>
+          <input id="instEmail" type="email" required placeholder="a.hassan@mombasa.go.ke"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22]" />
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="org" class="block text-sm font-semibold text-[#0D2757] mb-1">Organization</label>
+            <select id="org" required
+              class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+              <option value="">Select organization</option>
+              <option>Ministry of Health / GBVRC</option>
+              <option>Kenya Police Service (Gender Desk)</option>
+              <option>County Government (Mombasa / Kilifi)</option>
+              <option>Partner NGO / Shelter</option>
+              <option>Academic / Research Partner</option>
+            </select>
+          </div>
+          <div>
+            <label for="role" class="block text-sm font-semibold text-[#0D2757] mb-1">Role Requested</label>
+            <select id="role" required
+              class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F27C22]">
+              <option value="">Select role</option>
+              <option>Principal Investigator</option>
+              <option>Field Supervisor</option>
+              <option>Enumerator</option>
+              <option>Data Manager / Analyst</option>
+              <option>Institutional Focal Person</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="justification" class="block text-sm font-semibold text-[#0D2757] mb-1">Study Scope &amp; Justification</label>
+          <textarea id="justification" rows="3" required placeholder="Briefly state your county assignment (Mombasa or Kilifi) and data access requirements..."
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#F27C22]"></textarea>
+        </div>
+
+        <div class="rounded-lg bg-slate-50 border border-slate-200 p-3 text-xs text-slate-600 flex items-start gap-2">
+          <i data-lucide="info" class="w-4 h-4 text-[#0D2757] shrink-0 mt-0.5"></i>
+          <span>Access is restricted to approved research personnel. Requests are subject to Data Protection review.</span>
+        </div>
+
+        <button type="submit"
+          class="w-full py-2.5 px-4 rounded-lg bg-[#F27C22] hover:bg-[#d96a16] text-white font-semibold text-sm shadow-sm transition-all duration-200">
+          Submit Access Request
+        </button>
+      </form>
+
+      <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-sm">
+        <span class="text-slate-500">Already approved?</span>
+        <a href="/app/login.html" class="font-semibold text-[#0D2757] hover:text-[#F27C22] transition-colors">Back to Sign In &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    document.getElementById('access-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('request-success').classList.remove('hidden');
+      this.reset();
+    });
+  </script>
+</body>
+</html>

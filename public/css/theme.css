@@ -1,0 +1,32 @@
+:root {
+  --navy: #0D2757;
+  --leaf: #56B847;
+  --deep-green: #146C2E;
+  --orange: #F27C22;
+  --white: #FFFFFF;
+  --surface: #F8FAFC;
+
+  /* Contrast-checked pairs (see tests/contrast.test.js). */
+  --sidebar-bg: var(--navy);
+  --sidebar-fg: var(--white);
+  --nav-active-bg: var(--orange);
+  --nav-active-fg: var(--navy);
+  --btn-primary-bg: var(--leaf);
+  --btn-primary-fg: var(--navy);
+  --btn-secondary-bg: var(--deep-green);
+  --btn-secondary-fg: var(--white);
+  --text: var(--navy);
+  --page-bg: var(--surface);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--page-bg);
+}
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
